@@ -1,0 +1,36 @@
+// 登录态管理：token、user 信息统一通过 localStorage 读写。
+// 因为是多页面之间共享，所以使用全局单例即可。
+const TOKEN_KEY = 'auth_token'
+const USER_KEY = 'user'
+
+export function getToken() {
+  return localStorage.getItem(TOKEN_KEY) || ''
+}
+
+export function setToken(token) {
+  if (token) localStorage.setItem(TOKEN_KEY, token)
+  else localStorage.removeItem(TOKEN_KEY)
+}
+
+export function getUser() {
+  try {
+    const raw = localStorage.getItem(USER_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch (e) {
+    return null
+  }
+}
+
+export function setUser(user) {
+  if (user) localStorage.setItem(USER_KEY, JSON.stringify(user))
+  else localStorage.removeItem(USER_KEY)
+}
+
+export function clearAuth() {
+  localStorage.removeItem(TOKEN_KEY)
+  localStorage.removeItem(USER_KEY)
+}
+
+export function isLoggedIn() {
+  return !!getToken()
+}
